@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 插值绑定 -->
+    <p>{{name}}</p>
+    <!-- 指令解析 -->
+    <p m-text="name"></p>
+    <p>{{age}}</p>
+    <p>
+      {{doubleAge}}
+    </p>
+    <!-- 双向绑定：:value @input -->
+    <input type="text" m-model="name" />
+    <!-- 事件处理 -->
+    <button @click="changeName">changeName</button>
+    <!-- html内容解析 -->
+    <div m-html="html"></div>
+    <!-- for循环 -->
+    <ul>
+      <li m-for="item in list">{{item}}</li>
+    </ul>
+  </div>
+
+  <script src="./compile.js"></script>
+  <script src="./mvue.js"></script>
+  <script>
+    
+    const app = new MVue({
+      el: '#app',
+      data: {
+        name: 'test',
+        age: 12,
+        html: '<p>html内容<p>',
+        list: ['list1', 'list2', 'list3']
+      },
+      created () {
+        console.log('开始啦');
+        setTimeout(() => {
+          this.name = '测试';
+          this.list.push('list4');
+        }, 3000);
+      },
+      methods: {
+        changeName () {
+          this.name = 'change name';
+          this.age = 18;
+        }
+      }
+    })
+    new Compile('#app', app);
+  </script>
+
+  <script>
+    // vue编译过程
+      // vue 模板语法，比如指令、插槽，html 不能识别。
+      // 编译过程收集依赖，将data中的数据模型和视图进行绑定，产生依赖关系，数据发生变化，视图变化。数据驱动视图变化
+    // 双向绑定 v-model
+      // 指的是input上的指令v-model，它做了两件事，绑定：value值，监听@input事件。input发生变化，再赋值，从而触发数据更新，触发依赖，依赖更新视图。
+  </script>
+</body>
+</html>
